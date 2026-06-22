@@ -38,9 +38,7 @@ export function WeddingLinkCard({
         <h3 className="font-display text-lg font-semibold leading-tight text-card-foreground">
           {title}
         </h3>
-        <p className="mt-0.5 text-sm leading-relaxed text-muted-foreground">
-          {description}
-        </p>
+        <p className="mt-0.5 text-sm leading-relaxed text-muted-foreground">{description}</p>
       </div>
       <Heart
         className="h-4 w-4 shrink-0 fill-rose/20 text-rose/40 transition-transform duration-300 group-hover:scale-110 group-hover:fill-rose/40 group-hover:text-rose/60"

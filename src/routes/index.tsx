@@ -15,9 +15,16 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Priya & Rahul — Our Wedding" },
-      { name: "description", content: "All the important links for Priya and Rahul's wedding celebration. Pre-wedding film, venue, e-invite, RSVP and more." },
+      {
+        name: "description",
+        content:
+          "All the important links for Priya and Rahul's wedding celebration. Pre-wedding film, venue, e-invite, RSVP and more.",
+      },
       { property: "og:title", content: "Priya & Rahul — Our Wedding" },
-      { property: "og:description", content: "All the important links for Priya and Rahul's wedding celebration." },
+      {
+        property: "og:description",
+        content: "All the important links for Priya and Rahul's wedding celebration.",
+      },
       { property: "og:image", content: "/images/wedding-hero.jpg" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -188,9 +195,7 @@ function WeddingLinksPage() {
           <p className="font-display text-base italic text-muted-foreground">
             Can't wait to celebrate with you!
           </p>
-          <p className="mt-2 text-xs tracking-widest text-muted-foreground/70">
-            MADE WITH LOVE
-          </p>
+          <p className="mt-2 text-xs tracking-widest text-muted-foreground/70">MADE WITH LOVE</p>
         </footer>
       </div>
     </main>
