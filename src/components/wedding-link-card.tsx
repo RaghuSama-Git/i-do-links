@@ -26,7 +26,7 @@ export function WeddingLinkCard({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="group relative flex items-center gap-4 overflow-hidden rounded-2xl border border-border bg-card/80 p-5 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-card hover:shadow-md hover:ring-1 hover:ring-ring/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      className="group relative flex items-center gap-4 overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-card hover:shadow-md hover:ring-1 hover:ring-ring/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
     >
       <div
         className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl transition-colors duration-300 ${accentClasses[accent]}`}
