@@ -1,12 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import {
-  CalendarHeart,
-  Clapperboard,
-  Gift,
-  MapPin,
-  MessageCircleHeart,
-  ScrollText,
-} from "lucide-react";
+import { MapPin, MessageCircleHeart, ScrollText } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { WeddingLinkCard } from "@/components/wedding-link-card";
@@ -14,16 +7,16 @@ import { WeddingLinkCard } from "@/components/wedding-link-card";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Priya & Rahul — Our Wedding" },
+      { title: "Srija Reddy & Sai Kumar Reddy — Our Wedding" },
       {
         name: "description",
         content:
-          "All the important links for Priya and Rahul's wedding celebration. Pre-wedding film, venue, e-invite, RSVP and more.",
+          "All the important links for Srija Reddy and Sai Kumar Reddy's wedding celebration. Venue, e-invite and more.",
       },
-      { property: "og:title", content: "Priya & Rahul — Our Wedding" },
+      { property: "og:title", content: "Srija Reddy & Sai Kumar Reddy — Our Wedding" },
       {
         property: "og:description",
-        content: "All the important links for Priya and Rahul's wedding celebration.",
+        content: "All the important links for Srija Reddy and Sai Kumar Reddy's wedding celebration.",
       },
       { property: "og:image", content: "/images/wedding-hero.jpg" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -32,26 +25,25 @@ export const Route = createFileRoute("/")({
   component: WeddingLinksPage,
 });
 
-// Update these with the couple's details and real links.
 const COUPLE = {
-  partnerOne: "Priya",
-  partnerTwo: "Rahul",
-  date: new Date("2026-12-18T16:00:00"),
+  partnerOne: "Srija Reddy",
+  partnerTwo: "Sai Kumar Reddy",
+  date: new Date("2026-07-04T10:36:00"),
   location: "The Grand Garden, Bengaluru",
 };
 
 const WEDDING_LINKS = [
   {
-    href: "#pre-wedding-video",
-    title: "Pre-Wedding Shoot",
-    description: "Watch our pre-wedding film and behind-the-scenes moments.",
-    icon: Clapperboard,
-    accent: "rose" as const,
+    href: "https://maps.app.goo.gl/K4N5SKxssjrreb9g9",
+    title: "Wedding Venue",
+    description: "Venue location, directions and parking details.",
+    icon: MapPin,
+    accent: "sage" as const,
   },
   {
-    href: "#wedding-location",
-    title: "Wedding Venue",
-    description: "Directions, parking details and venue map.",
+    href: "https://maps.app.goo.gl/XH8wUQhd51Y4nTca9",
+    title: "Reception Venue",
+    description: "Reception location and directions.",
     icon: MapPin,
     accent: "sage" as const,
   },
@@ -63,25 +55,11 @@ const WEDDING_LINKS = [
     accent: "gold" as const,
   },
   {
-    href: "#rsvp",
-    title: "RSVP",
-    description: "Let us know if you can make it by 1 December 2026.",
-    icon: CalendarHeart,
-    accent: "rose" as const,
-  },
-  {
-    href: "#gifts",
-    title: "Gift Registry",
-    description: "Your presence is enough, but if you wish to give, see our registry.",
-    icon: Gift,
-    accent: "sage" as const,
-  },
-  {
     href: "#contact",
     title: "Questions?",
     description: "Reach out on WhatsApp for any last-minute queries.",
     icon: MessageCircleHeart,
-    accent: "gold" as const,
+    accent: "rose" as const,
   },
 ];
 
@@ -94,14 +72,39 @@ function formatCountdown(ms: number) {
 }
 
 function Countdown({ target }: { target: Date }) {
-  const [remaining, setRemaining] = useState(target.getTime() - Date.now());
+  const [remaining, setRemaining] = useState(0);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+    setRemaining(target.getTime() - Date.now());
     const timer = setInterval(() => {
       setRemaining(target.getTime() - Date.now());
     }, 1000);
     return () => clearInterval(timer);
   }, [target]);
+
+  const unitLabels = ["Days", "Hours", "Minutes", "Seconds"];
+
+  if (!mounted) {
+    return (
+      <div className="grid grid-cols-4 gap-3 sm:gap-4">
+        {unitLabels.map((label) => (
+          <div
+            key={label}
+            className="flex flex-col items-center rounded-xl border border-border bg-card p-3 text-center backdrop-blur-sm"
+          >
+            <span className="font-display text-2xl font-semibold text-foreground sm:text-3xl">
+              00
+            </span>
+            <span className="mt-1 text-[10px] uppercase tracking-widest text-muted-foreground sm:text-xs">
+              {label}
+            </span>
+          </div>
+        ))}
+      </div>
+    );
+  }
 
   const { days, hours, minutes, seconds } = formatCountdown(Math.max(0, remaining));
 
@@ -117,7 +120,7 @@ function Countdown({ target }: { target: Date }) {
       {units.map((unit) => (
         <div
           key={unit.label}
-          className="flex flex-col items-center rounded-xl border border-border bg-card/60 p-3 text-center backdrop-blur-sm"
+          className="flex flex-col items-center rounded-xl border border-border bg-card p-3 text-center backdrop-blur-sm"
         >
           <span className="font-display text-2xl font-semibold text-foreground sm:text-3xl">
             {String(unit.value).padStart(2, "0")}
@@ -131,13 +134,31 @@ function Countdown({ target }: { target: Date }) {
   );
 }
 
+function formatWeddingDate(date: Date) {
+  const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  const weekday = weekdays[date.getDay()];
+  const day = date.getDate();
+  const month = months[date.getMonth()];
+  const year = date.getFullYear();
+  return `${weekday}, ${day} ${month} ${year}`;
+}
+
 function WeddingLinksPage() {
-  const formattedDate = COUPLE.date.toLocaleDateString("en-IN", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  const formattedDate = formatWeddingDate(COUPLE.date);
 
   return (
     <main className="grain relative min-h-screen overflow-x-hidden bg-background px-4 py-10 sm:py-14">
@@ -146,12 +167,12 @@ function WeddingLinksPage() {
         <div className="relative mb-8 aspect-[3/2] w-full overflow-hidden rounded-3xl shadow-lg">
           <img
             src="/images/wedding-hero.jpg"
-            alt="Priya and Rahul wedding invitation hero"
+            alt="Srija and Sai Kumar wedding invitation hero"
             className="h-full w-full object-cover"
             width={1200}
             height={800}
           />
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent" />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
         </div>
 
         {/* Names & date */}
