@@ -134,13 +134,31 @@ function Countdown({ target }: { target: Date }) {
   );
 }
 
+function formatWeddingDate(date: Date) {
+  const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  const weekday = weekdays[date.getDay()];
+  const day = date.getDate();
+  const month = months[date.getMonth()];
+  const year = date.getFullYear();
+  return `${weekday}, ${day} ${month} ${year}`;
+}
+
 function WeddingLinksPage() {
-  const formattedDate = COUPLE.date.toLocaleDateString("en-IN", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  const formattedDate = formatWeddingDate(COUPLE.date);
 
   return (
     <main className="grain relative min-h-screen overflow-x-hidden bg-background px-4 py-10 sm:py-14">
