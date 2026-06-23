@@ -6,6 +6,7 @@ interface WeddingLinkCardProps {
   description: string;
   icon: LucideIcon;
   accent?: "rose" | "sage" | "gold";
+  onClick?: () => void;
 }
 
 export function WeddingLinkCard({
@@ -14,6 +15,7 @@ export function WeddingLinkCard({
   description,
   icon: Icon,
   accent = "rose",
+  onClick,
 }: WeddingLinkCardProps) {
   const accentClasses = {
     rose: "bg-rose/10 text-rose group-hover:bg-rose/20",
@@ -21,12 +23,15 @@ export function WeddingLinkCard({
     gold: "bg-gold/10 text-foreground/80 group-hover:bg-gold/20",
   };
 
+  const Tag = onClick ? "button" : "a";
+  const tagProps = onClick
+    ? { onClick, type: "button" as const }
+    : { href, target: "_blank" as const, rel: "noopener noreferrer" as const };
+
   return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="group relative flex items-center gap-4 overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-card hover:shadow-md hover:ring-1 hover:ring-ring/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+    <Tag
+      {...tagProps}
+      className="group relative flex w-full cursor-pointer items-center gap-4 overflow-hidden rounded-2xl border border-border bg-card p-5 text-left shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-card hover:shadow-md hover:ring-1 hover:ring-ring/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
     >
       <div
         className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl transition-colors duration-300 ${accentClasses[accent]}`}
@@ -44,6 +49,6 @@ export function WeddingLinkCard({
         className="h-4 w-4 shrink-0 fill-rose/20 text-rose/40 transition-transform duration-300 group-hover:scale-110 group-hover:fill-rose/40 group-hover:text-rose/60"
         aria-hidden="true"
       />
-    </a>
+    </Tag>
   );
 }
