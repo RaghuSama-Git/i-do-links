@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { MapPin, MessageCircleHeart, ScrollText } from "lucide-react";
+import { MapPin, MessageCircleHeart, ScrollText, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { WeddingLinkCard } from "@/components/wedding-link-card";
+import invitationAsset from "@/assets/invitation.png.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -29,7 +30,7 @@ const COUPLE = {
   partnerOne: "Srija Reddy",
   partnerTwo: "Sai Kumar Reddy",
   date: new Date("2026-07-04T10:36:00"),
-  location: "The Grand Garden, Bengaluru",
+  location: "@ LPR Convention Hall, Mulugu",
 };
 
 const WEDDING_LINKS = [
@@ -157,7 +158,54 @@ function formatWeddingDate(date: Date) {
   return `${weekday}, ${day} ${month} ${year}`;
 }
 
+function InvitationModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+  useEffect(() => {
+    if (!open) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", handleKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", handleKey);
+      document.body.style.overflow = "";
+    };
+  }, [open, onClose]);
+
+  if (!open) return null;
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4 py-8 backdrop-blur-sm"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Wedding invitation"
+    >
+      <div
+        className="relative max-h-full max-w-md overflow-hidden rounded-2xl border border-border bg-card shadow-2xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          onClick={onClose}
+          className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-black/40 text-white transition-colors hover:bg-black/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+          aria-label="Close invitation"
+        >
+          <X className="h-4 w-4" />
+        </button>
+        <img
+          src={invitationAsset.url}
+          alt="Digital wedding invitation for Srija Reddy and Sai Kumar Reddy"
+          className="max-h-[80vh] w-auto object-contain"
+          loading="lazy"
+        />
+      </div>
+    </div>
+  );
+}
+
 function WeddingLinksPage() {
+  const [inviteOpen, setInviteOpen] = useState(false);
   const formattedDate = formatWeddingDate(COUPLE.date);
 
   return (
@@ -206,6 +254,11 @@ function WeddingLinksPage() {
                 description={link.description}
                 icon={link.icon}
                 accent={link.accent}
+                onClick={
+                  link.title === "E-Invite / Wedding Card"
+                    ? () => setInviteOpen(true)
+                    : undefined
+                }
               />
             ))}
           </div>
@@ -219,6 +272,8 @@ function WeddingLinksPage() {
           <p className="mt-2 text-xs tracking-widest text-muted-foreground/70">MADE WITH LOVE</p>
         </footer>
       </div>
+
+      <InvitationModal open={inviteOpen} onClose={() => setInviteOpen(false)} />
     </main>
   );
 }
