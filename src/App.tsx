@@ -1,30 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { MapPin, MessageCircleHeart, ScrollText, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { WeddingLinkCard } from "@/components/wedding-link-card";
-import invitationAsset from "@/assets/invitation.png.asset.json";
-
-export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Srija Reddy & Sai Kumar Reddy — Our Wedding" },
-      {
-        name: "description",
-        content:
-          "All the important links for Srija Reddy and Sai Kumar Reddy's wedding celebration. Venue, e-invite and more.",
-      },
-      { property: "og:title", content: "Srija Reddy & Sai Kumar Reddy — Our Wedding" },
-      {
-        property: "og:description",
-        content: "All the important links for Srija Reddy and Sai Kumar Reddy's wedding celebration.",
-      },
-      { property: "og:image", content: "/images/wedding-hero.jpg" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
-  component: WeddingLinksPage,
-});
 
 const COUPLE = {
   partnerOne: "Srija Reddy",
@@ -73,39 +50,14 @@ function formatCountdown(ms: number) {
 }
 
 function Countdown({ target }: { target: Date }) {
-  const [remaining, setRemaining] = useState(0);
-  const [mounted, setMounted] = useState(false);
+  const [remaining, setRemaining] = useState(() => target.getTime() - Date.now());
 
   useEffect(() => {
-    setMounted(true);
-    setRemaining(target.getTime() - Date.now());
     const timer = setInterval(() => {
       setRemaining(target.getTime() - Date.now());
     }, 1000);
     return () => clearInterval(timer);
   }, [target]);
-
-  const unitLabels = ["Days", "Hours", "Minutes", "Seconds"];
-
-  if (!mounted) {
-    return (
-      <div className="grid grid-cols-4 gap-3 sm:gap-4">
-        {unitLabels.map((label) => (
-          <div
-            key={label}
-            className="flex flex-col items-center rounded-xl border border-border bg-card p-3 text-center backdrop-blur-sm"
-          >
-            <span className="font-display text-2xl font-semibold text-foreground sm:text-3xl">
-              00
-            </span>
-            <span className="mt-1 text-[10px] uppercase tracking-widest text-muted-foreground sm:text-xs">
-              {label}
-            </span>
-          </div>
-        ))}
-      </div>
-    );
-  }
 
   const { days, hours, minutes, seconds } = formatCountdown(Math.max(0, remaining));
 
@@ -138,24 +90,10 @@ function Countdown({ target }: { target: Date }) {
 function formatWeddingDate(date: Date) {
   const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December",
   ];
-  const weekday = weekdays[date.getDay()];
-  const day = date.getDate();
-  const month = months[date.getMonth()];
-  const year = date.getFullYear();
-  return `${weekday}, ${day} ${month} ${year}`;
+  return `${weekdays[date.getDay()]}, ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
 }
 
 function InvitationModal({ open, onClose }: { open: boolean; onClose: () => void }) {
@@ -194,7 +132,7 @@ function InvitationModal({ open, onClose }: { open: boolean; onClose: () => void
           <X className="h-4 w-4" />
         </button>
         <img
-          src={invitationAsset.url}
+          src="/images/invitation.png"
           alt="Digital wedding invitation for Srija Reddy and Sai Kumar Reddy"
           className="max-h-[80vh] w-auto object-contain"
           loading="lazy"
@@ -204,14 +142,13 @@ function InvitationModal({ open, onClose }: { open: boolean; onClose: () => void
   );
 }
 
-function WeddingLinksPage() {
+export default function App() {
   const [inviteOpen, setInviteOpen] = useState(false);
   const formattedDate = formatWeddingDate(COUPLE.date);
 
   return (
     <main className="grain relative min-h-screen overflow-x-hidden bg-background px-4 py-10 sm:py-14">
       <div className="mx-auto max-w-xl">
-        {/* Hero image */}
         <div className="relative mb-8 aspect-[3/2] w-full overflow-hidden rounded-3xl shadow-lg">
           <img
             src="/images/wedding-hero.jpg"
@@ -223,7 +160,6 @@ function WeddingLinksPage() {
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
         </div>
 
-        {/* Names & date */}
         <div className="mb-10 text-center">
           <p className="mb-3 text-xs font-medium uppercase tracking-[0.25em] text-muted-foreground">
             Save the Date
@@ -238,12 +174,10 @@ function WeddingLinksPage() {
           </p>
         </div>
 
-        {/* Countdown */}
         <div className="mb-10">
           <Countdown target={COUPLE.date} />
         </div>
 
-        {/* Link cards */}
         <section aria-label="Wedding links">
           <div className="flex flex-col gap-4">
             {WEDDING_LINKS.map((link) => (
@@ -264,7 +198,6 @@ function WeddingLinksPage() {
           </div>
         </section>
 
-        {/* Footer */}
         <footer className="mt-12 text-center">
           <p className="font-display text-base italic text-muted-foreground">
             Can't wait to celebrate with you!
