@@ -2,6 +2,7 @@ import { MapPin, MessageCircleHeart, ScrollText, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { WeddingLinkCard } from "@/components/wedding-link-card";
+import invitationAsset from "@/assets/wedding-card.png";
 
 const COUPLE = {
   partnerOne: "Srija Reddy",
@@ -26,16 +27,16 @@ const WEDDING_LINKS = [
     accent: "sage" as const,
   },
   {
-    href: "#wedding-card",
+    href: invitationAsset,
     title: "E-Invite / Wedding Card",
     description: "View and download our digital wedding invitation.",
     icon: ScrollText,
     accent: "gold" as const,
   },
   {
-    href: "#contact",
+    href: "https://www.instagram.com/srija__10/",
     title: "Questions?",
-    description: "Reach out on WhatsApp for any last-minute queries.",
+    description: "Reach out on Instagram for any last-minute queries.",
     icon: MessageCircleHeart,
     accent: "rose" as const,
   },
@@ -166,7 +167,9 @@ export default function App() {
           </p>
           <h1 className="font-display text-5xl font-semibold leading-none text-foreground sm:text-6xl">
             {COUPLE.partnerOne}
+            <br/>
             <span className="mx-3 inline-block align-middle text-rose">&</span>
+            <br/>
             {COUPLE.partnerTwo}
           </h1>
           <p className="mt-4 font-display text-lg italic text-muted-foreground">
