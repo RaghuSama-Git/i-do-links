@@ -172,9 +172,9 @@ export default function App() {
             <br/>
             {COUPLE.partnerTwo}
           </h1>
-          <p className="mt-4 font-display text-lg italic text-muted-foreground">
-            {formattedDate} · {COUPLE.location}
-          </p>
+          <p className="mt-4 font-display text-2xl italic font-semibold text-gray-900">
+  {formattedDate} · {COUPLE.location}
+</p>
         </div>
 
         <div className="mb-10">
